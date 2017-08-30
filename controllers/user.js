@@ -2,7 +2,6 @@ const { User } = require('../models');
 const requireAuth = require('../services/passport').requireAuth;
 const getTokenForUser = require('../services/token');
 
-
 const createUser = (req, res) => {
   const user = new User(req.body);
   user.save((err, user) => {
