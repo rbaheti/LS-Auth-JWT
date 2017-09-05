@@ -9,8 +9,8 @@ const localOptions = {
   usernameField: 'email',
 };
 
-const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-  User.findOne({ email }, (err, user) => {
+const localLogin = new LocalStrategy(localOptions, (username, password, done) => {
+  User.findOne({ username }, (err, user) => {
     if (err) return done(err);
     if (!user) return done(null, false);
     user.checkPassword(password, (err, isMatch) => {

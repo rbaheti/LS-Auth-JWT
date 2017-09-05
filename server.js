@@ -7,9 +7,14 @@ const port = process.env.PORT || 3000;
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/auth', { useMongoClient: true });
 
+const corsOptions = {
+  "origin": "http://localhost:65226",
+  "credentials": true
+};
+
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 require('./controllers')(app);
 
