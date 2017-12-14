@@ -5,6 +5,6 @@ const signIn = (req, res) => {
   res.send({ token: getTokenForUser(req.user) });
 };
 
-module.exports = (app) => {
+module.exports = app => {
   app.post('/login', requireSignIn, signIn);
 };

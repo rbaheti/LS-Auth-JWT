@@ -3,11 +3,12 @@ const requireAuth = require('../services/passport').requireAuth;
 const getTokenForUser = require('../services/token');
 
 const createUser = (req, res) => {
-  const user = new User(req.body);
+  const { username, password } = req.body;
+  const user = new User({ username, password });
   user.save((err, user) => {
     if (err) return res.send(err);
     res.send({
-      token: getTokenForUser(user),
+      token: getTokenForUser(user)
     });
   });
 };
@@ -19,7 +20,7 @@ const getUsers = (req, res) => {
   });
 };
 
-module.exports = (app) => {
+module.exports = app => {
   app.post('/users', createUser);
   app.get('/users', requireAuth, getUsers);
 };

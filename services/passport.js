@@ -6,24 +6,27 @@ const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local');
 
 const localOptions = {
-  usernameField: 'email',
+  usernameField: 'username'
 };
 
-const localLogin = new LocalStrategy(localOptions, (username, password, done) => {
-  User.findOne({ username }, (err, user) => {
-    if (err) return done(err);
-    if (!user) return done(null, false);
-    user.checkPassword(password, (err, isMatch) => {
+const localLogin = new LocalStrategy(
+  localOptions,
+  (username, password, done) => {
+    User.findOne({ username }, (err, user) => {
       if (err) return done(err);
-      if (!isMatch) return done(null, false);
-      return done(null, user);
+      if (!user) return done(null, false);
+      user.checkPassword(password, (err, isMatch) => {
+        if (err) return done(err);
+        if (!isMatch) return done(null, false);
+        return done(null, user);
+      });
     });
-  });
-});
+  }
+);
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: config.secret,
+  secretOrKey: config.secret
 };
 
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
@@ -39,5 +42,5 @@ passport.use(localLogin);
 
 module.exports = {
   requireAuth: passport.authenticate('jwt', { session: false }),
-  requireSignIn: passport.authenticate('local', { session: false }),
+  requireSignIn: passport.authenticate('local', { session: false })
 };
